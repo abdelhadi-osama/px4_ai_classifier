@@ -9,6 +9,9 @@ The data pipeline is modularized inside the `data/` directory:
 *   `data/data_bulding/`: Contains scripts to aggregate and clean the raw drone logs (e.g., `merge_asof`).
 *   `data/preprossing/`: Contains scripts for correlation analysis, missing value patching, and Stratified Group splitting.
 *   `data/EDA/`: Contains Exploratory Data Analysis (EDA) Jupyter notebooks and diagnostic scripts.
+*   `src/`: Contains the PyTorch Deep Learning architecture.
+    *   `config.py`: Centralized hyperparameters.
+    *   `dataloader/`: Contains the PyTorch Dataset and rolling window logic.
 *   `tests/`: Verification scripts to ensure pipeline integrity.
 *   `data/`: The root of the data folder houses the final processed `_scaled.csv` files ready for training. *(Note: Raw data is ignored in version control to save space).*
 

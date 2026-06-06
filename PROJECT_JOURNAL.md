@@ -34,19 +34,34 @@ With a single `MASTER_TRAINING_DATA.csv` created, we needed to prepare it for Py
 
 ---
 
-## Part 2: What We Will Do Next (The Architecture)
+## Part 2: PyTorch Architecture & Data Pipeline (Phase 4)
 
-### 3. PyTorch Data Loading (Rolling Windows)
-LSTMs and CNNs do not look at a single row; they look at a *sequence* of rows to understand trends (like a sudden drop in altitude).
-*   **Action:** We will build a PyTorch `Dataset` class that chops our scaled CSVs into overlapping **Rolling Windows** (e.g., taking 50 rows, which equals 0.5 seconds of flight, to predict the final row's label). We will dynamically drop the `%time` and `flight_id` columns here.
+We have transitioned from raw CSV data engineering to building the actual Deep Learning pipeline. We are using a modular architecture to separate configuration, data loading, and model definitions.
 
-### 4. Multi-Model Architecture & Training
+### 3. Centralized Configuration (`src/config.py`)
+*   **The Concept:** Hardcoding batch sizes, window lengths, and file paths across multiple scripts leads to bugs.
+*   **The Implementation:** We created a single `config.py` file to hold all hyperparameters. This includes `WINDOW_SIZE = 50` (0.5 seconds of flight data) and `STEP_SIZE = 10`.
+
+### 4. PyTorch Data Loading & Rolling Windows (`src/dataloader/dataset.py`)
+*   **The Problem:** LSTMs and CNNs require 3D tensors `[batch_size, sequence_length, features]`. We must convert our 2D tabular CSV into overlapping 3D sequences without crossing flight boundaries.
+*   **The Implementation:** We built `PX4FlightDataset`.
+    1.  **Boundary Safety:** It groups data by `flight_id` first, ensuring a rolling window never contains the end of Flight A and the beginning of Flight B.
+    2.  **Labeling the Window:** For a window of 50 rows, it assigns the `target_label` of the *very last row* (Row 50) as the label for the entire sequence.
+    3.  **The DataLoader:** The `get_dataloaders()` function bundles these windows into batches of 64 and handles the shuffling, completely separating data delivery from model training.
+
+---
+
+## Part 3: What We Will Do Next (Models & Training)
+
+### 5. Multi-Model Architecture (`src/models.py`)
 We will build and compare three distinct approaches:
-1.  **The Baseline (XGBoost/Random Forest):** A simple, non-sequential model. Useful to see if deep learning is even necessary.
+1.  **The Baseline (XGBoost):** A simple, non-sequential model. Useful to see if deep learning is even necessary.
 2.  **1D-CNN (Convolutional Neural Net):** Excellent at quickly finding local "spikes" or patterns in time-series data.
-3.  **LSTM (Long Short-Term Memory):** The gold standard for sequences, capable of remembering long-term dependencies (e.g., a slow battery drain leading to an engine failure).
-*   **Imbalance Handling:** During training, we will pass **Class Weights** to the `CrossEntropyLoss` function so the network is heavily penalized for missing the rare failures (like Elevator), forcing it to learn them despite having less data.
+3.  **LSTM (Long Short-Term Memory):** The gold standard for sequences, capable of remembering long-term context.
 
-### 5. Streamlit Inference UI
-Once the best model is saved as a `.pt` file, we will build a web interface.
-*   **Action:** A user will upload a raw drone CSV. The app will run our data pipeline in the background (Scaler + Windowing), feed it to the PyTorch model, and generate an interactive graph showing exactly when and why the AI thinks the drone failed.
+### 6. The Training Engine (`src/train.py`)
+*   **Imbalance Handling:** During training, we will pass **Class Weights** to the `CrossEntropyLoss` function so the network is heavily penalized for missing the rare failures (like Elevator), forcing it to learn them despite having less data.
+*   **Tracking:** We will integrate MLflow to track validation accuracy and loss for the different models.
+
+### 7. Streamlit Inference UI
+Once the best model is saved as a `.pt` file, we will build a web interface. Users will upload a raw drone CSV, and the app will generate an interactive graph showing exactly when and why the AI thinks the drone failed.
