@@ -1,0 +1,19 @@
+[project]
+name = "px4-ai-classifier"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "pandas>=3.0.3",
+    "torch",
+    "scikit-learn",
+    "numpy",
+    "tqdm",
+    "streamlit",
+    "matplotlib",
+    "plotly",
+    "mlflow",
+    "seaborn>=0.13.2",
+    "joblib",
+]

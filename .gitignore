@@ -1,0 +1,19 @@
+# Environments
+.venv/
+.env
+__pycache__/
+*.pyc
+
+# Raw and Processed Data
+alfa_dataset/
+alfa_unified_raw/
+data/clean_data/
+data/*_scaled.csv
+data/*.pkl
+
+# Notebooks
+.ipynb_checkpoints/
+eda_outputs/
+
+# Project Plans
+readme_plan.md
