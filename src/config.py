@@ -63,3 +63,28 @@ CLASS_NAMES = {
     5: "Multi-Fault"
 }
 NUM_CLASSES = len(CLASS_NAMES)
+
+
+# ==========================================
+# 5. MODEL HYPERPARAMETERS (Phase 5)
+# ==========================================
+# Common
+LEARNING_RATE = 0.001
+EPOCHS = 50
+EARLY_STOPPING_PATIENCE = 7
+
+# CNN Specific
+CNN_FILTERS_1 = 32
+CNN_FILTERS_2 = 64
+CNN_DROPOUT   = 0.5
+
+# LSTM Specific
+LSTM_HIDDEN_SIZE = 64
+LSTM_NUM_LAYERS  = 2
+LSTM_DROPOUT     = 0.3 # Dropout between LSTM layers
+FC_DROPOUT       = 0.5 # Dropout in final fully connected layer
+
+# Hybrid Specific
+HYBRID_CNN_FILTERS = 32
+HYBRID_LSTM_HIDDEN = 64
+HYBRID_DROPOUT     = 0.5
