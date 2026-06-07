@@ -88,3 +88,8 @@ FC_DROPOUT       = 0.5 # Dropout in final fully connected layer
 HYBRID_CNN_FILTERS = 32
 HYBRID_LSTM_HIDDEN = 64
 HYBRID_DROPOUT     = 0.5
+
+# ==========================================
+# 6. EXPERIMENT TRACKING (WandB)
+# ==========================================
+WANDB_PROJECT = "px4-ai-classifier"
