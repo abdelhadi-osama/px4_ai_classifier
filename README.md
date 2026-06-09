@@ -48,6 +48,26 @@ To compare the performance of all trained models locally on the test set:
 uv run evaluate_all.py
 ```
 
+### 4. Interactive Dashboard (Streamlit App)
+We provide a web-based dashboard to visualize the AI model's real-time predictions on raw flight logs. 
+
+To launch the dashboard:
+```bash
+uv run streamlit run app.py
+```
+
+**How to use and understand the App:**
+1. **Upload Data:** Upload a raw ROS bag telemetry `.csv` file via the sidebar.
+2. **AI Inference:** The Hybrid AI model instantly processes the flight using a 0.5s sliding window.
+3. **Prediction Table:** A detailed table lists every time-slice where a failure was detected, providing the exact timestamp, fault type (e.g., Engine, Rudder), and the model's Confidence %.
+4. **Vibration Analysis (FFT):** The "Raw Signal Analysis" section lets you select any sensor group (like IMU or Power) to view its Spectral Analysis (FFT). You can move the Time Range slider to isolate the exact moment of a failure and watch the vibration peaks (Hz) shift in real-time, verifying the AI's diagnosis mathematically.
+
+🎥 **Demo Video:** Check out the interactive dashboard in action below!
+
+<video src="app_vedio.webm" controls="controls" style="max-width: 100%;">
+  Your browser does not support the video tag.
+</video>
+
 ## Final Model Comparison
 After training and rigorous evaluation, the following results were achieved:
 
