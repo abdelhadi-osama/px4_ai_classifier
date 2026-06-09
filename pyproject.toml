@@ -18,4 +18,5 @@ dependencies = [
     "joblib",
     "modal>=1.4.3",
     "wandb>=0.27.2",
+    "scipy",
 ]
