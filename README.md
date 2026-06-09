@@ -9,6 +9,10 @@
 
 A Deep Learning-based MVP system that automatically detects and classifies mechanical failures by analyzing flight logs from fixed-wing UAVs.
 
+
+Uploading app_vedio.mp4…
+
+
 ## Project Architecture
 This project focuses on identifying 6 different flight states (Normal + 5 Fault Types) using PyTorch, processing multi-sensor temporal data (IMU, GPS, Actuators).
 
